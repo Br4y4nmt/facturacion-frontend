@@ -1,22 +1,36 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import EcommerceImage from "@/assets/Logo3.png";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
+  const navigate = useNavigate();
   const { login } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
-      await login(email, password);
-      window.location.href = "/home";
-    } catch {
+      const usuario = await login(email, password);
+
+      // 🔹 Redirección según rol
+      if (usuario.rolId === 1) {
+        navigate("/dashboard"); // SuperAdmin
+      } else if (usuario.rolId === 2) {
+        navigate("/empresa"); // AdminEmpresa
+      } else {
+        navigate("/home"); // Otros (vendedor, cajero, etc.)
+      }
+    } catch (err) {
+      console.error("Error en login:", err);
       setError("Credenciales inválidas. Intenta nuevamente.");
       setLoading(false);
     }
@@ -41,7 +55,7 @@ export default function Login() {
             BIENVENIDO A
           </h2>
           <h3 className="text-lg font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 mb-6 font-[Montserrat]">
-            CORPORACION SSSTIC E.I.R.L
+            CORPORACIÓN BRYANDEV E.I.R.L
           </h3>
 
           <p className="text-center text-gray-500 mb-8 font-[Montserrat]">
@@ -57,9 +71,9 @@ export default function Login() {
 
           {/* Formulario */}
           <form onSubmit={handleLogin} className="space-y-5 font-[Montserrat]">
-            {/* Campo de correo */}
+            {/* Correo */}
             <div>
-              <label className="block text-[#6A647D] text-sm font-normal mb-1 font-[Montserrat]">
+              <label className="block text-[#6A647D] text-sm font-normal mb-1">
                 Correo electrónico
               </label>
               <input
@@ -72,10 +86,10 @@ export default function Login() {
               />
             </div>
 
-            {/* Campo de contraseña */}
+            {/* Contraseña */}
             <div>
               <div className="flex justify-between items-center mb-2">
-              <label className="block text-[#6A647D] text-sm font-normal mb-1 font-[Montserrat]">
+                <label className="block text-[#6A647D] text-sm font-normal">
                   Contraseña
                 </label>
                 <a
@@ -85,14 +99,24 @@ export default function Login() {
                   ¿Has olvidado tu contraseña?
                 </a>
               </div>
-              <input
-                type="password"
-                placeholder="••••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-200 rounded-md p-2.5 text-gray-700 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/40 shadow-sm transition-all duration-200"
-                required
-              />
+
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-gray-200 rounded-md p-2.5 pr-10 text-gray-700 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/40 shadow-sm transition-all duration-200"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-blue-500 transition-transform duration-200 hover:scale-110"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             {/* Botón */}
@@ -107,7 +131,8 @@ export default function Login() {
 
           {/* Footer */}
           <p className="text-center text-gray-400 text-sm mt-8 font-[Montserrat]">
-            © {new Date().getFullYear()} BRYAN MEDINA. Todos los derechos reservados.
+            © {new Date().getFullYear()} BRYAN MEDINA. Todos los derechos
+            reservados.
           </p>
         </div>
       </div>
