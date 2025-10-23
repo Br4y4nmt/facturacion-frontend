@@ -1,44 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import EcommerceImage from "@/assets/Logo3.png";
 import { Eye, EyeOff } from "lucide-react";
+import { showWelcomeAlert, showToast, showBlockAlert } from "@/utils/alert";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const { login, user, isAuthenticated } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // No necesitamos verificar la sesión en la página de login
+  // La verificación solo se hará cuando el usuario inicie sesión explícitamente
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     try {
-      const usuario = await login(email, password);
+      const usuario = await login({ email, password });
 
-      // 🔹 Redirección según rol
-      if (usuario.rolId === 1) {
-        navigate("/dashboard"); // SuperAdmin
-      } else if (usuario.rolId === 2) {
-        navigate("/empresa"); // AdminEmpresa
-      } else {
-        navigate("/home"); // Otros (vendedor, cajero, etc.)
+      showWelcomeAlert(usuario.nombre.toUpperCase());
+
+      switch (usuario.rolId) {
+        case 1:
+          navigate("/superadmin");
+          break;
+        case 2:
+          navigate("/adminempresa");
+          break;
+        default:
+          navigate("/home");
+          break;
       }
     } catch (err) {
-      console.error("Error en login:", err);
-      setError("Credenciales inválidas. Intenta nuevamente.");
+      const mensaje =
+        err?.response?.data?.error ||
+        "Credenciales inválidas. Intenta nuevamente.";
+
+      console.error("Error en login:", mensaje);
+
+      if (err?.response?.status === 429) {
+        showBlockAlert("Demasiados intentos", "Intenta nuevamente más tarde.");
+      } else {
+        showToast("error", "Correo o contraseña incorrectos", "bottom-end");
+      }
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="flex min-h-screen bg-white">
-      {/* 🔹 Columna izquierda (imagen) */}
+      {/* Columna izquierda */}
       <div className="hidden lg:flex w-2/3 h-screen overflow-hidden items-center justify-center bg-white">
         <img
           src={EcommerceImage}
@@ -47,10 +64,9 @@ export default function Login() {
         />
       </div>
 
-      {/* 🔹 Columna derecha (formulario) */}
+      {/* Columna derecha */}
       <div className="flex flex-col justify-center items-center w-full lg:w-1/3 bg-white shadow-xl relative z-10">
         <div className="w-full max-w-xl px-12 py-10">
-          {/* Encabezado */}
           <h2 className="text-2xl font-normal text-[#6A647D] tracking-wide text-center mb-1 font-[Montserrat]">
             BIENVENIDO A
           </h2>
@@ -61,13 +77,6 @@ export default function Login() {
           <p className="text-center text-gray-500 mb-8 font-[Montserrat]">
             Ingresa a tu cuenta
           </p>
-
-          {/* Error */}
-          {error && (
-            <div className="bg-red-100 text-red-600 p-3 rounded mb-4 text-center text-sm font-[Montserrat]">
-              {error}
-            </div>
-          )}
 
           {/* Formulario */}
           <form onSubmit={handleLogin} className="space-y-5 font-[Montserrat]">
@@ -131,8 +140,7 @@ export default function Login() {
 
           {/* Footer */}
           <p className="text-center text-gray-400 text-sm mt-8 font-[Montserrat]">
-            © {new Date().getFullYear()} BRYAN MEDINA. Todos los derechos
-            reservados.
+            © {new Date().getFullYear()} BRYAN MEDINA. Todos los derechos reservados.
           </p>
         </div>
       </div>

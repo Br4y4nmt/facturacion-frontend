@@ -5,15 +5,29 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
-// Agregamos el token si existe (para rutas protegidas)
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Interceptor para manejar errores de sesión
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Solo manejar errores de autenticación si no estamos en login
+    if (error.response?.status === 401 && window.location.pathname !== '/login') {
+      console.log("Sesión expirada o error de autenticación");
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      if (!sessionStorage.getItem('logging_out')) {
+        window.location.replace('/login');
+      }
+    }
+    // No mostrar errores 429 en consola si estamos en login
+    if (error.response?.status === 429 && window.location.pathname === '/login') {
+      return Promise.reject(new Error('Rate limit reached'));
+    }
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 export default api;
