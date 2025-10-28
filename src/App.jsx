@@ -8,13 +8,11 @@ import SuperAdminDashboard from "@/pages/superadmin/Dashboard";
 import AdminLayout from "@/pages/adminempresa/Layout";
 import AdminDashboard from "@/pages/adminempresa/Dashboard";
 
-
-
 export default function App() {
-  const { checkAuth, isAuthenticated, user } = useAuthStore();
+  const { checkAuth, isAuthenticated, user, loading } = useAuthStore();
 
   useEffect(() => {
-    checkAuth();
+    checkAuth(); // Valida cookie en el backend
   }, [checkAuth]);
 
   const getDefaultRoute = () => {
@@ -29,10 +27,20 @@ export default function App() {
     }
   };
 
+  // Espera mientras se valida la sesión
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-500 text-sm font-[Montserrat]">
+          Verificando sesión...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-
         <Route
           path="/login"
           element={

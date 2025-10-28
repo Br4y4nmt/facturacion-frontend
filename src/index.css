@@ -5,3 +5,13 @@ body {
 body {
   font-family: 'Montserrat', sans-serif;
 }
+/* 🔹 Quita por completo el borde inferior del botón cuando está abierto */
+.sidebar-button.open {
+  border-bottom: none !important;
+}
+
+/* 🔹 El submenú se solapa perfectamente con el botón superior */
+.sidebar-submenu {
+  margin-top: -1px !important;
+  border-top: none !important;
+}

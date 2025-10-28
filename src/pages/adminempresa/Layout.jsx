@@ -1,15 +1,17 @@
-import Sidebar from "@/components/layout/Sidebar";
-import Header from "@/components/layout/Header";
-import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import SidebarAdmin from "@/components/layout/SidebarAdmin";
+import HeaderAdmin from "@/components/layout/HeaderAdmin";
 
-export default function AdminLayout() {
+export default function LayoutAdmin({ children }) {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1">
-        <Header />
-        <main className="p-6 bg-gray-50 min-h-screen">
-          <Outlet />
+    <div className="flex h-screen overflow-hidden">
+      <SidebarAdmin collapsed={collapsed} setCollapsed={setCollapsed} />
+      <div className="flex flex-col flex-1 transition-all duration-300">
+        <HeaderAdmin collapsed={collapsed} setCollapsed={setCollapsed} />
+        <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">
+          {children}
         </main>
       </div>
     </div>
