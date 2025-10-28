@@ -235,11 +235,16 @@ export default function Sidebar({ collapsed, setCollapsed }) {
                     {item.submenu.map((sub, idx) => (
                       <li key={idx}>
                         <Link
-                          to={sub.path}
-                          className="relative flex items-center text-[#E2E8F0] hover:text-white text-[13px] font-[Montserrat] py-[0.5px] px-3 rounded-md transition-transform duration-200 ease-in-out hover:translate-x-[6px] before:content-['◦'] before:mr-[6px] before:text-[#E2E8F0] hover:before:text-white before:text-[23px]"
-                        >
-                          {sub.label}
-                        </Link>
+                        to={sub.path}
+                        className={`relative flex items-center text-[13px] font-[Montserrat] py-[3px] px-3 rounded-md transition-all duration-200 ease-in-out before:mr-[6px] before:text-[23px]
+                          ${
+                            location.pathname === sub.path
+                              ? "bg-[#0B1437] text-white font-semibold before:content-['●'] before:text-white"
+                              : "text-[#E2E8F0] hover:text-white before:content-['◦'] before:text-[#E2E8F0] hover:before:text-white hover:translate-x-[6px]"
+                          }`}
+                      >
+                        {sub.label}
+                      </Link>
                       </li>
                     ))}
                   </ul>
