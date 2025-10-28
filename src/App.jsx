@@ -7,12 +7,13 @@ import SuperAdminLayout from "@/pages/superadmin/Layout";
 import SuperAdminDashboard from "@/pages/superadmin/Dashboard";
 import AdminLayout from "@/pages/adminempresa/Layout";
 import AdminDashboard from "@/pages/adminempresa/Dashboard";
+import Empresas from "@/pages/superadmin/Empresas";
 
 export default function App() {
-  const { checkAuth, isAuthenticated, user, loading } = useAuthStore();
+  const { checkAuth, isAuthenticated, user, checking  } = useAuthStore();
 
   useEffect(() => {
-    checkAuth(); // Valida cookie en el backend
+    checkAuth(); 
   }, [checkAuth]);
 
   const getDefaultRoute = () => {
@@ -27,8 +28,7 @@ export default function App() {
     }
   };
 
-  // Espera mientras se valida la sesión
-  if (loading) {
+  if (checking) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-50">
         <p className="text-gray-500 text-sm font-[Montserrat]">
@@ -58,7 +58,7 @@ export default function App() {
         >
           <Route element={<SuperAdminLayout />}>
             <Route index element={<SuperAdminDashboard />} />
-            <Route path="empresas" element={<div>Empresas</div>} />
+            <Route path="empresas/*" element={<Empresas />} />
           </Route>
         </Route>
 

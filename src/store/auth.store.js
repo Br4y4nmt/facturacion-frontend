@@ -7,48 +7,43 @@ export const useAuthStore = create(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      loading: true,
+      // este flag es SOLO para la verificación inicial de sesión (/auth/me)
+      checking: true,
 
-      // LOGIN
+      // LOGIN (no tocar 'checking' aquí)
       login: async ({ email, password }) => {
-        set({ loading: true });
         try {
           const { usuario } = await authService.login({ email, password });
-          set({ user: usuario, isAuthenticated: true, loading: false });
+          set({ user: usuario, isAuthenticated: true });
           return usuario;
         } catch (error) {
-          console.error("❌ Error en login:", error);
-          set({ isAuthenticated: false, loading: false });
+          // no cambies 'checking' y evita desmontar la app
+          set({ isAuthenticated: false });
           throw error;
         }
       },
 
       // LOGOUT
       logout: async () => {
-        try {
-          await authService.logout();
-        } catch (error) {
-          console.warn("⚠️ Error al cerrar sesión:", error);
-        }
-        set({ user: null, isAuthenticated: false, loading: false });
+        try { await authService.logout(); } catch {}
+        set({ user: null, isAuthenticated: false, checking: false });
         localStorage.clear();
       },
 
       // CHECK SESSION via /me
       checkAuth: async () => {
-        set({ loading: true });
+        set({ checking: true });
         try {
           const data = await authService.getProfile();
           if (data?.usuario) {
-            set({ user: data.usuario, isAuthenticated: true, loading: false });
+            set({ user: data.usuario, isAuthenticated: true, checking: false });
             return true;
           } else {
-            set({ user: null, isAuthenticated: false, loading: false });
+            set({ user: null, isAuthenticated: false, checking: false });
             return false;
           }
         } catch (error) {
-          console.error("❌ Sesión inválida:", error.message);
-          set({ user: null, isAuthenticated: false, loading: false });
+          set({ user: null, isAuthenticated: false, checking: false });
           return false;
         }
       },
