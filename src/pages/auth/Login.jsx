@@ -13,8 +13,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // No necesitamos verificar la sesión en la página de login
-  // La verificación solo se hará cuando el usuario inicie sesión explícitamente
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -55,7 +53,6 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      {/* Columna izquierda */}
       <div className="hidden lg:flex w-2/3 h-screen overflow-hidden items-center justify-center bg-white">
         <img
           src={EcommerceImage}
@@ -64,7 +61,6 @@ export default function Login() {
         />
       </div>
 
-      {/* Columna derecha */}
       <div className="flex flex-col justify-center items-center w-full lg:w-1/3 bg-white shadow-xl relative z-10">
         <div className="w-full max-w-xl px-12 py-10">
           <h2 className="text-2xl font-normal text-[#6A647D] tracking-wide text-center mb-1 font-[Montserrat]">
@@ -78,9 +74,8 @@ export default function Login() {
             Ingresa a tu cuenta
           </p>
 
-          {/* Formulario */}
           <form onSubmit={handleLogin} className="space-y-5 font-[Montserrat]">
-            {/* Correo */}
+
             <div>
               <label className="block text-[#6A647D] text-sm font-normal mb-1">
                 Correo electrónico
@@ -95,7 +90,6 @@ export default function Login() {
               />
             </div>
 
-            {/* Contraseña */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-[#6A647D] text-sm font-normal">
@@ -128,7 +122,6 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Botón */}
             <button
               type="submit"
               disabled={loading}
@@ -138,7 +131,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Footer */}
           <p className="text-center text-gray-400 text-sm mt-8 font-[Montserrat]">
             © {new Date().getFullYear()} BRYAN MEDINA. Todos los derechos reservados.
           </p>

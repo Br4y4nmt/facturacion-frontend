@@ -15,7 +15,6 @@ export default function Header({ collapsed, setCollapsed }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
-  // Cierra el menú si haces clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -27,14 +26,12 @@ export default function Header({ collapsed, setCollapsed }) {
   }, []);
 const handleLogout = async () => {
   await logout();
-  window.location.href = "/login"; // o usa navigate("/login", { replace: true });
+  window.location.href = "/login"; 
 };
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 h-[64px] px-6 flex items-center justify-between font-[Montserrat] relative">
-      {/* 🔹 Lado izquierdo: Botón toggle + botones rápidos */}
       <div className="flex items-center gap-2">
-        {/* Botón para colapsar/desplegar Sidebar */}
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="p-2.5 ml-[-20px] rounded-md text-[#60769a] bg-transparent hover:bg-gray-100/60 transition-all duration-300"
@@ -42,7 +39,6 @@ const handleLogout = async () => {
           {collapsed ? <ChevronRight size={25} /> : <ChevronLeft size={25} />}
         </button>
 
-        {/* Botones rectangulares */}
         {["+ NC", "+ POS", "+ ME", "⋯"].map((label, i) => {
           const [symbol, text] = label.split(" ");
           const isEdit = label === "⋯";
@@ -67,17 +63,9 @@ const handleLogout = async () => {
         })}
       </div>
 
-      {/* 🔹 Lado derecho: Toggle PROD + Iconos y usuario */}
       <div className="flex items-center gap-6" ref={menuRef}>
-        {/* Toggle PROD */}
-        <div className="flex items-center gap-2">
-          <div className="relative flex items-center w-10 h-5 bg-green-500 rounded-full shadow-inner pl-[2px]">
-            <div className="w-4 h-4 bg-white rounded-full shadow transition-all"></div>
-          </div>
-          <span className="text-sm font-medium text-[#60769a]">PROD</span>
-        </div>
+        
 
-        {/* Ícono carrito */}
         <div className="relative cursor-pointer text-[#60769a]">
           <ShoppingCart size={20} />
           <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-semibold rounded-full px-[4px] py-[1px]">
@@ -85,7 +73,6 @@ const handleLogout = async () => {
           </span>
         </div>
 
-        {/* Ícono notificaciones */}
         <div className="relative cursor-pointer text-[#60769a]">
           <Bell size={20} />
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-semibold rounded-full px-[5px] py-[1px]">
@@ -93,7 +80,6 @@ const handleLogout = async () => {
           </span>
         </div>
 
-        {/* Usuario */}
         <div
           className="flex items-center gap-2 text-right cursor-pointer select-none"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -111,7 +97,6 @@ const handleLogout = async () => {
           </div>
         </div>
 
-        {/* 🔽 Menú desplegable */}
        {menuOpen && (
   <div className="absolute right-4 top-[60px] w-52 bg-white rounded-lg shadow-lg z-50 py-2.5 animate-fadeIn">
     <button className="w-full flex items-center gap-2 px-4 py-2.5 text-[13px] text-[#8a8f9a] hover:bg-[#283046] hover:text-white transition-all">
@@ -130,7 +115,6 @@ const handleLogout = async () => {
     </button>
   </div>
 )}
-
 
       </div>
     </header>

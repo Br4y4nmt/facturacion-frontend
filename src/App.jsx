@@ -7,7 +7,11 @@ import SuperAdminLayout from "@/pages/superadmin/Layout";
 import SuperAdminDashboard from "@/pages/superadmin/Dashboard";
 import AdminLayout from "@/pages/adminempresa/Layout";
 import AdminDashboard from "@/pages/adminempresa/Dashboard";
+import Clientes from "@/pages/adminempresa/Clientes";
 import Empresas from "@/pages/superadmin/Empresas";
+import Suscripciones from "@/pages/superadmin/Suscripciones";
+
+
 
 export default function App() {
   const { checkAuth, isAuthenticated, user, checking  } = useAuthStore();
@@ -59,6 +63,7 @@ export default function App() {
           <Route element={<SuperAdminLayout />}>
             <Route index element={<SuperAdminDashboard />} />
             <Route path="empresas/*" element={<Empresas />} />
+            <Route path="suscripciones/*" element={<Suscripciones />} />
           </Route>
         </Route>
 
@@ -68,6 +73,7 @@ export default function App() {
         >
           <Route element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="clientes" element={<Clientes />} />
           </Route>
         </Route>
 

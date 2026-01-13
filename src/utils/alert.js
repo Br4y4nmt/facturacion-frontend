@@ -1,7 +1,6 @@
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 
-// Configuración base con tu estilo corporativo
 const baseConfig = {
   confirmButtonColor: "#3B82F6", 
   cancelButtonColor: "#EF4444", 
@@ -13,7 +12,6 @@ const baseConfig = {
   },
 };
 
-// Éxito
 export const showSuccess = (title, text = "") => {
   return Swal.fire({
     ...baseConfig,
@@ -43,7 +41,7 @@ export const showInfo = (title, text = "") => {
   });
 };
 
-// Confirmación
+
 export const showConfirm = async (title, text = "") => {
   const result = await Swal.fire({
     ...baseConfig,
@@ -57,7 +55,7 @@ export const showConfirm = async (title, text = "") => {
   return result.isConfirmed;
 };
 
-// Alerta de bloqueo o error crítico (NO TOCADA)
+
 export const showBlockAlert = (title, text = "") => {
   return Swal.fire({
     icon: "warning",
@@ -74,7 +72,6 @@ export const showBlockAlert = (title, text = "") => {
   });
 };
 
-// Toast corporativo BryanDev (fondo blanco, iconos clásicos)
 export const showToast = (icon = "info", title = "", position = "bottom-end") => {
   const iconColors = {
     success: "#22c55e", 
@@ -106,7 +103,6 @@ export const showToast = (icon = "info", title = "", position = "bottom-end") =>
   });
 };
 
-// Toast de bienvenida (inferior derecha, moderno y elegante)
 export const showWelcomeAlert = (nombre = "USUARIO") => {
   const toast = Swal.mixin({
     toast: true,
