@@ -10,6 +10,7 @@ import AdminDashboard from "@/pages/adminempresa/Dashboard";
 import Clientes from "@/pages/adminempresa/Clientes";
 import Empresas from "@/pages/superadmin/Empresas";
 import Suscripciones from "@/pages/superadmin/Suscripciones";
+import Plantillas from "@/pages/superadmin/configuracion/Plantillas";
 
 
 
@@ -64,6 +65,7 @@ export default function App() {
             <Route index element={<SuperAdminDashboard />} />
             <Route path="empresas/*" element={<Empresas />} />
             <Route path="suscripciones/*" element={<Suscripciones />} />
+            <Route path="configuracion/plantillas" element={<Plantillas />} />
           </Route>
         </Route>
 

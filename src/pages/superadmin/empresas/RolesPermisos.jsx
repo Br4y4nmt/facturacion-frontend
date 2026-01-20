@@ -38,7 +38,7 @@ export default function RolesPermisos() {
     createRol,
     updateRol,
     deleteRol,
-  } = useRoles();
+  } = useRoles(selectedEmpresaId);
 
   // ✅ SIN fallback, solo backend
   const modulosPermisos = Array.isArray(modulos) ? modulos : [];

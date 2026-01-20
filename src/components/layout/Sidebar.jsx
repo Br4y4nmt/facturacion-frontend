@@ -112,8 +112,9 @@ export default function Sidebar({ collapsed, setCollapsed }) {
               submenu: [
                 { label: "Catálogos SUNAT", path: "/superadmin/configuracion/catalogos" },
                 { label: "Parámetros Globales", path: "/superadmin/configuracion/parametros" },
-                { label: "Correos del Sistema", path: "/superadmin/configuracion/correos" },
-                { label: "Mantenimiento", path: "/superadmin/configuracion/mantenimiento" },
+                    { label: "Correos del Sistema", path: "/superadmin/configuracion/correos" },
+                    { label: "Mantenimiento", path: "/superadmin/configuracion/mantenimiento" },
+                    { label: "Plantillas PDF", path: "/superadmin/configuracion/plantillas" },
               ],
             },
           ]

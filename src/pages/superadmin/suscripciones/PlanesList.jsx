@@ -64,10 +64,6 @@ const formatLimit = (value) => {
 
 
 
-// ============================================
-// CARD DE PLAN
-// ============================================
-
 const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -77,7 +73,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         !plan.activo ? "opacity-60" : ""
       }`}
     >
-      {/* Popular badge */}
       {plan.popular && (
         <div className="absolute top-4 right-4 z-10">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
@@ -87,7 +82,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         </div>
       )}
 
-      {/* Trial badge */}
       {plan.trial && (
         <div className="absolute top-4 right-4 z-10">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
@@ -97,7 +91,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         </div>
       )}
 
-      {/* Header con color */}
       <div
         className="px-6 py-5 text-white"
         style={{ backgroundColor: plan.color || "#3B82F6" }}
@@ -111,7 +104,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         <p className="text-white/80 text-sm">{plan.descripcion}</p>
       </div>
 
-      {/* Precio */}
       <div className="px-6 py-4 border-b border-gray-100">
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold text-gray-900">
@@ -128,7 +120,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         )}
       </div>
 
-      {/* Límites */}
       <div className="px-6 py-4 space-y-3">
         <div className="flex items-center justify-between text-sm">
           <span className="flex items-center gap-2 text-gray-600">
@@ -159,7 +150,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         </div>
       </div>
 
-      {/* Características expandibles */}
       {plan.caracteristicas?.length > 0 && (
         <div className="px-6 py-3 border-t border-gray-100">
           <button
@@ -182,7 +172,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         </div>
       )}
 
-      {/* Empresas suscritas */}
       <div className="px-6 py-3 bg-gray-50 border-t border-gray-100">
         <div className="flex items-center gap-2 text-sm">
           <Users className="w-4 h-4 text-gray-400" />
@@ -192,7 +181,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
         </div>
       </div>
 
-      {/* Acciones */}
       <div className="flex items-center gap-2 p-4 border-t border-gray-100">
         <button
           onClick={() => onToggle(plan.id)}
@@ -237,9 +225,6 @@ const PlanCard = ({ plan, onEdit, onDelete, onToggle }) => {
   );
 };
 
-// ============================================
-// COMPONENTE PRINCIPAL
-// ============================================
 
 export default function PlanesList() {
   const {
@@ -261,8 +246,6 @@ export default function PlanesList() {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("create");
   const [selectedPlan, setSelectedPlan] = useState(null);
-
-  // Filtrar planes
   const filteredPlanes = useMemo(() => {
     return planes.filter((p) => {
       return (
@@ -273,7 +256,6 @@ export default function PlanesList() {
     });
   }, [planes, searchTerm]);
 
-  // Handlers
   const handleOpenCreate = () => {
     setSelectedPlan(null);
     setModalMode("create");
@@ -323,7 +305,6 @@ export default function PlanesList() {
     }
   };
 
-  // Estado de carga
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
@@ -340,7 +321,6 @@ export default function PlanesList() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#0B1437] via-[#1a2555] to-[#0B1437] text-white">
         <div className="px-6 py-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">

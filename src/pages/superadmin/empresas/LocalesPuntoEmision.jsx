@@ -16,9 +16,6 @@ import {
   Hash,
 } from "lucide-react";
 
-// ============================================
-// COMPONENTES AUXILIARES
-// ============================================
 
 const StatCard = ({ icon: Icon, title, value, gradient }) => {
   const gradients = {
@@ -75,9 +72,6 @@ const TipoBadge = ({ tipo }) => {
   );
 };
 
-// ============================================
-// MODAL CREAR/EDITAR LOCAL
-// ============================================
 const ModalLocal = ({ isOpen, onClose, onSubmit, loading, local, mode }) => {
   const [form, setForm] = useState({
     codigo: "",
@@ -128,7 +122,6 @@ const ModalLocal = ({ isOpen, onClose, onSubmit, loading, local, mode }) => {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-lg rounded-lg shadow-2xl">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-[#1E293B]">
             {mode === "create" ? "Nuevo Local" : "Editar Local"}
@@ -138,7 +131,6 @@ const ModalLocal = ({ isOpen, onClose, onSubmit, loading, local, mode }) => {
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit}>
           <div className="p-6 space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -211,7 +203,6 @@ const ModalLocal = ({ isOpen, onClose, onSubmit, loading, local, mode }) => {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
             <button
               type="button"
@@ -234,22 +225,16 @@ const ModalLocal = ({ isOpen, onClose, onSubmit, loading, local, mode }) => {
   );
 };
 
-// ============================================
-// COMPONENTE PRINCIPAL
-// ============================================
+
 export default function LocalesPuntoEmision() {
   const { empresas, loading: loadingEmpresas, error: errorEmpresas } = useEmpresas();
-
   const [selectedEmpresaId, setSelectedEmpresaId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterTipo, setFilterTipo] = useState("");
-
-  // Modal states
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("create");
   const [selectedLocal, setSelectedLocal] = useState(null);
 
-  // Hook de locales conectado a API
   const {
     locales,
     loading,
@@ -265,7 +250,6 @@ export default function LocalesPuntoEmision() {
     toggleStatus,
   } = useLocales(selectedEmpresaId);
 
-  // Auto-seleccionar primera empresa
   useEffect(() => {
     if (!selectedEmpresaId && Array.isArray(empresas) && empresas.length > 0) {
       setSelectedEmpresaId(empresas[0].id);
@@ -276,7 +260,6 @@ export default function LocalesPuntoEmision() {
     return (empresas || []).find((e) => e.id === selectedEmpresaId) || null;
   }, [empresas, selectedEmpresaId]);
 
-  // Filtrar locales
   const filteredLocales = useMemo(() => {
     return locales.filter((l) => {
       const matchSearch =
@@ -291,7 +274,6 @@ export default function LocalesPuntoEmision() {
     });
   }, [locales, searchTerm, filterTipo]);
 
-  // Handlers
   const handleOpenCreate = () => {
     setSelectedLocal(null);
     setModalMode("create");
@@ -317,7 +299,6 @@ export default function LocalesPuntoEmision() {
       setShowModal(false);
     } catch (err) {
       console.error("Error:", err);
-      // El hook ya maneja los errores internamente
     }
   };
 
@@ -338,7 +319,6 @@ export default function LocalesPuntoEmision() {
     }
   };
 
-  // Estados de vista
   if (loadingEmpresas) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
@@ -373,7 +353,6 @@ export default function LocalesPuntoEmision() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#0B1437] via-[#1a2555] to-[#0B1437] text-white">
         <div className="px-6 py-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -397,7 +376,6 @@ export default function LocalesPuntoEmision() {
             </button>
           </div>
 
-          {/* Selector de empresa */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <div className="flex-1">
@@ -435,27 +413,28 @@ export default function LocalesPuntoEmision() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="px-6 py-6 space-y-6">
-        {/* Filters */}
         <div className="bg-white rounded-2xl shadow-lg p-4">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="relative flex-1">
+
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Buscar por nombre, código o dirección..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                placeholder:text-gray-400"              />
             </div>
 
             <select
               value={filterTipo}
               onChange={(e) => setFilterTipo(e.target.value)}
-              className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 bg-white"
-            >
+              className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm
+              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                        >
               <option value="">Todos los tipos</option>
               <option value="PRINCIPAL">Principal</option>
               <option value="SUCURSAL">Sucursal</option>
@@ -485,15 +464,15 @@ export default function LocalesPuntoEmision() {
           ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50/80">
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Código</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Local</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Dirección</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tipo</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Series</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Estado</th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Acciones</th>
+              <thead className="bg-white text-[#1E293B] uppercase text-xs border-b border-gray-200">
+                <tr >
+                  <th className="px-6 py-4 text-left font-semibold">Código</th>
+                  <th className="px-6 py-4 text-left font-semibold">Local</th>
+                  <th className="px-6 py-4 text-left font-semibold">Dirección</th>
+                  <th className="px-6 py-4 text-left font-semibold">Tipo</th>
+                  <th className="px-6 py-4 text-left font-semibold">Series</th>
+                  <th className="px-6 py-4 text-left font-semibold">Estado</th>
+                  <th className="px-6 py-4 text-right font-semibold">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -509,7 +488,10 @@ export default function LocalesPuntoEmision() {
                   </tr>
                 ) : (
                   filteredLocales.map((local) => (
-                    <tr key={local.id} className="hover:bg-gray-50/50 transition-colors">
+                    <tr
+                        key={local.id}
+                        className="hover:bg-gray-50 transition-colors duration-150"
+                        >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <Hash className="w-4 h-4 text-gray-400" />
@@ -520,7 +502,7 @@ export default function LocalesPuntoEmision() {
                         <p className="font-semibold text-gray-900">{local.nombre}</p>
                         <p className="text-xs text-gray-500">Ubigeo: {local.ubigeo || "—"}</p>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                      <td className="px-6 py-4 text-sm text-gray-600 max-w-[280px] truncate">
                         {local.direccion}
                       </td>
                       <td className="px-6 py-4">
@@ -573,7 +555,6 @@ export default function LocalesPuntoEmision() {
         </div>
       </div>
 
-      {/* Modal */}
       <ModalLocal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

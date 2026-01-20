@@ -3,58 +3,79 @@ import api from "@/services/api";
 const BASE_URL = "/roles";
 
 /**
- * Obtener todos los roles con stats
+ * Helper para construir URL con empresaId como query
  */
-export const getRoles = async () => {
-  const response = await api.get(BASE_URL);
+function withEmpresa(url, empresaId) {
+  return empresaId ? `${url}?empresaId=${empresaId}` : url;
+}
+
+/**
+ * Obtener todos los roles con stats (opcional por empresa)
+ * GET /roles?empresaId=1
+ */
+export const getRoles = async (empresaId) => {
+  const url = withEmpresa(BASE_URL, empresaId);
+  const response = await api.get(url);
   return response.data;
 };
 
 /**
- * Obtener un rol por ID
+ * Obtener un rol por ID (opcional por empresa)
+ * GET /roles/:id?empresaId=1
  */
-export const getRolById = async (id) => {
-  const response = await api.get(`${BASE_URL}/${id}`);
+export const getRolById = async (id, empresaId) => {
+  const url = withEmpresa(`${BASE_URL}/${id}`, empresaId);
+  const response = await api.get(url);
   return response.data;
 };
 
 /**
- * Obtener permisos de un rol
+ * Obtener permisos de un rol (opcional por empresa)
+ * GET /roles/:id/permisos?empresaId=1
  */
-export const getRolPermisos = async (id) => {
-  const response = await api.get(`${BASE_URL}/${id}/permisos`);
+export const getRolPermisos = async (id, empresaId) => {
+  const url = withEmpresa(`${BASE_URL}/${id}/permisos`, empresaId);
+  const response = await api.get(url);
   return response.data;
 };
 
 /**
- * Crear un nuevo rol
+ * Crear un nuevo rol (opcional por empresa)
+ * POST /roles?empresaId=1
  */
-export const createRol = async (data) => {
-  const response = await api.post(BASE_URL, data);
+export const createRol = async (empresaId, data) => {
+  const url = withEmpresa(BASE_URL, empresaId);
+  const response = await api.post(url, data);
   return response.data;
 };
 
 /**
- * Actualizar un rol
+ * Actualizar un rol (opcional por empresa)
+ * PUT /roles/:id?empresaId=1
  */
-export const updateRol = async (id, data) => {
-  const response = await api.put(`${BASE_URL}/${id}`, data);
+export const updateRol = async (empresaId, id, data) => {
+  const url = withEmpresa(`${BASE_URL}/${id}`, empresaId);
+  const response = await api.put(url, data);
   return response.data;
 };
 
 /**
- * Actualizar permisos de un rol
+ * Actualizar permisos de un rol (opcional por empresa)
+ * PUT /roles/:id/permisos?empresaId=1
  */
-export const updateRolPermisos = async (id, permisos) => {
-  const response = await api.put(`${BASE_URL}/${id}/permisos`, { permisos });
+export const updateRolPermisos = async (empresaId, id, permisos) => {
+  const url = withEmpresa(`${BASE_URL}/${id}/permisos`, empresaId);
+  const response = await api.put(url, { permisos });
   return response.data;
 };
 
 /**
- * Eliminar un rol
+ * Eliminar un rol (opcional por empresa)
+ * DELETE /roles/:id?empresaId=1
  */
-export const deleteRol = async (id) => {
-  const response = await api.delete(`${BASE_URL}/${id}`);
+export const deleteRol = async (empresaId, id) => {
+  const url = withEmpresa(`${BASE_URL}/${id}`, empresaId);
+  const response = await api.delete(url);
   return response.data;
 };
 
